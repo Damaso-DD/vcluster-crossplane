@@ -1,0 +1,15 @@
+apiVersion: multicloud.environments/v1alpha1  
+kind: EKSClusterClaim  
+metadata:
+  name: team-2-eks
+  labels:
+    cluster-owner: YOUR_AWS_USER 
+spec:
+  id: team-2
+  compositionSelector:
+    matchLabels:
+      provider: aws
+      cluster: eks
+  parameters:
+    nodeSize: small
+    minNodeCount: 3

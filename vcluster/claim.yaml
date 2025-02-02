@@ -1,0 +1,7 @@
+apiVersion: multicloud.environments/v1
+kind: ClusterClaim  
+metadata:
+  name: team-1-vcluster
+spec:
+  clusterName: "vcluster"
+  namespace: "team-1"

@@ -1,0 +1,36 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: vcluster-cluster
+spec:
+  compositeTypeRef:
+    apiVersion: multicloud.environments/v1
+    kind: vcluster
+  resources:
+    - name: vcluster-release
+      base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        spec:
+          forProvider:
+            chart:
+              name: vcluster
+              repository: https://charts.loft.sh
+              version: 0.19.9
+            namespace: "team-1" 
+          publishConnectionDetailsTo:
+            name: connection-details
+          writeConnectionSecretToRef:
+            namespace: crossplane-system
+            name: vcluster-connection
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.clusterName"
+          policy:
+            fromFieldPath: Required
+          toFieldPath: "metadata.name"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.namespace"
+          policy:
+            fromFieldPath: Required
+          toFieldPath: "spec.forProvider.namespace"
